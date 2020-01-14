@@ -341,7 +341,6 @@ print(obj1.name)#"于大爷"
 
 obj2 = Base('alex')
 print(obj2.name)#alex
-'''
 
 #14.
 class Base(object):
@@ -359,5 +358,114 @@ print(isinstance(obj,Foo))#T
 print(isinstance(obj,Base))#T
 
 
+#15.
+class StarkConfig(object):
+    def __init__(self, num):
+        self.num = num
+    def __call__(self, *args, **kwargs):
+        print(self.num)
+class RoleConfig(StarkConfig):
+    def __call__(self, *args, **kwargs):
+        print(self.num)
+
+v1 = StarkConfig(1)
+v2 = RoleConfig(11)
+
+v1() #1
+v2() #11
 
 
+
+
+#16.
+class StarkConfig(object):
+    def __init__(self, num):
+        self.num = num
+
+    def run(self):
+        self()
+
+    def __call__(self, *args, **kwargs):
+        print(self.num)
+
+
+class RoleConfig(StarkConfig):
+    def __call__(self, *args, **kwargs):
+        print(345)
+
+    def __getitem__(self, item):
+        return self.num[item]
+
+
+v1 = RoleConfig('alex')
+v2 = StarkConfig("wupeiqi")
+
+print(v1[1])#l
+print(v2[2])
+
+
+#17.
+
+class Context:
+    def __enter__(self):
+        return self
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+    def do_something(self):
+        pass
+
+with Context() as ctx:
+    ctx.do_something()
+
+#18
+class Stack(object):
+    def __init__(self):
+        self.data_list = []
+
+    def push(self, val):
+        self.data_list.append(val)
+
+    def pop(self):
+
+        return self.data_list.pop()
+
+
+obj = Stack()
+# 调用push方法，将数据加入到data_list中。
+obj.push('alex')
+obj.push('武沛齐')
+obj.push('金老板')
+
+
+# 调用pop讲数据从data_list获取并删掉，注意顺序(按照后进先出的格式)
+v1 = obj.pop()  # 金老板
+v2 = obj.pop()  # 武沛齐
+print(v2)
+v3 = obj.pop()  # alex
+print(v3)
+
+# 请补全Stack类中的push和pop方法，将obj的对象维护成 后进先出 的结构。
+'''
+
+#19如何主动触发一个异常？
+class MY(Exception):
+    pass
+try:
+    raise MY('123')
+except Exception as e:
+    print(e)
+
+
+
+#20
+def func(arg):
+    try:
+        int(arg)
+    except Exception as e:
+        print('异常')
+    finally:
+        print('哦')
+
+
+func('123')#哦
+func('二货')#异常 哦
